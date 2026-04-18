@@ -1,3 +1,4 @@
+import { fonts } from "@/theme/typography";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 interface Props {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 15,
     lineHeight: 20,
-    fontFamily: "ManropeBold",
+    fontFamily: fonts.bold,
   },
 });
 
