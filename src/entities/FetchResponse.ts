@@ -1,7 +1,7 @@
-import { Posts } from "./Posts";
+import { Post } from "./Post";
 
 export interface FetchResponse {
   hasMore: boolean;
   nextCursor: string;
-  posts: Posts;
+  posts: Post[];
 }
