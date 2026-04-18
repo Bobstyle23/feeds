@@ -1,10 +1,20 @@
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function HomeScreen() {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    usePosts();
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+    isRefetching,
+  } = usePosts();
+
+  const queryClient = useQueryClient();
 
   if (isLoading) return <ActivityIndicator />;
 
@@ -23,6 +33,11 @@ export default function HomeScreen() {
         )}
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
+        }}
+        onEndReachedThreshold={0.5}
+        refreshing={isRefetching}
+        onRefresh={() => {
+          queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
         ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       />
