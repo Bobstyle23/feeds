@@ -3,6 +3,7 @@ import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
 import PostHeader from "@/components/PostHeader";
+import Post from "@/components/Post";
 
 export default function HomeScreen() {
   const {
@@ -21,22 +22,24 @@ export default function HomeScreen() {
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
-  console.log(isRefetching);
-
   return (
     <SafeAreaView>
       <FlatList
+        style={{ backgroundColor: "#F5F8FD" }}
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={{ padding: 16 }}>
+          <View>
             <PostHeader
               avatarUrl={item.author.avatarUrl}
               author={item.author.displayName}
             />
 
-            <Text>{item.title}</Text>
-            <Text>{item.preview}</Text>
+            <Post
+              postImageUrl={item.coverUrl}
+              postTitle={item.title}
+              postPreview={item.preview}
+            />
           </View>
         )}
         onEndReached={() => {
