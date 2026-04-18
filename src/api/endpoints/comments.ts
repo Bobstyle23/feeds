@@ -3,5 +3,5 @@ import { api } from "../client";
 
 export const getComments = async (postId: string) => {
   const res = await api.get<Comments>(`/posts/${postId}/comments`);
-  return res.data.comments;
+  return res.data;
 };
