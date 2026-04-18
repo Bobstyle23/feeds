@@ -1,3 +1,4 @@
+import { colors } from "@/theme/colors";
 import { fonts } from "@/theme/typography";
 import { Image, View, Text, StyleSheet } from "react-native";
 
@@ -21,7 +22,7 @@ function Post({ postImageUrl, postTitle, postPreview }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.postBackground,
     marginBlockEnd: 16,
   },
   image: {

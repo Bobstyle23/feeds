@@ -1,9 +1,10 @@
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
 import PostHeader from "@/components/PostHeader";
 import Post from "@/components/Post";
+import { colors } from "@/theme/colors";
 
 export default function HomeScreen() {
   const {
@@ -12,7 +13,6 @@ export default function HomeScreen() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch,
     isRefetching,
   } = usePosts();
 
@@ -25,7 +25,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <FlatList
-        style={{ backgroundColor: "#F5F8FD" }}
+        style={{ backgroundColor: colors.bodyBackground }}
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
