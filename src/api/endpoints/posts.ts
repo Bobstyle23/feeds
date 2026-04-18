@@ -8,8 +8,8 @@ interface Params {
   limit?: number;
 }
 
-export const getPosts = async (params?: Params) => {
-  const res = await api.get<Posts>("/posts", { params });
+export const getPosts = async (params?: Params): Promise<Posts> => {
+  const res = await api.get<FetchResponse>("/posts", { params });
   return res.data.data;
 };
 

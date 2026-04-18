@@ -1,9 +1,7 @@
 import { Post } from "./Post";
 
 export interface Posts {
-  data: {
-    hasMore: boolean;
-    nextCursor: string;
-    posts: Post[];
-  };
+  hasMore: boolean;
+  nextCursor: string | null;
+  posts: Post[];
 }

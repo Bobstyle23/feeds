@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,7 +8,7 @@ export default function HomeScreen() {
 
   if (isLoading) return <ActivityIndicator />;
 
-  const posts = data?.pages.flatMap((p) => p.posts) ?? [];
+  const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
   return (
     <SafeAreaView>
