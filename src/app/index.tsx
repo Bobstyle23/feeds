@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 

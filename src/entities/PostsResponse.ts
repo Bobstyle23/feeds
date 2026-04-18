@@ -1,7 +1,6 @@
 import { Post } from "./Post";
 
 export interface PostsResponse {
-  ok: boolean;
   data: {
     hasMore: boolean;
     nextCursor: string | null;
