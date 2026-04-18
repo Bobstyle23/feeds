@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   author: {
     fontSize: 15,
-    fontWeight: "bold",
     lineHeight: 20,
+    fontFamily: "ManropeBold",
   },
 });
 

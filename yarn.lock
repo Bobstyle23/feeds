@@ -2636,7 +2636,7 @@ expo-file-system@~55.0.16:
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-55.0.16.tgz#a4e766ef9ac0d3c4e1bf24165eb78040dd3ac7f7"
   integrity sha512-EetQ/zVFK07Vmz4Yke0fvoES4xVwScTdd0PMoLekuMX7puE4op75pNnEdh1M0AeWzkqLrBoZIaU2ynSrKN5VZg==
 
-expo-font@~55.0.6:
+expo-font@^55.0.6, expo-font@~55.0.6:
   version "55.0.6"
   resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-55.0.6.tgz#f6ef6c7a9d2ff70bd7c22fc2b01f7db0bdbbeefc"
   integrity sha512-x9czUA3UQWjIwa0ZUEs/eWJNqB4mAue/m4ltESlNPLZhHL0nWWqIfsyHmklTLFH7mVfcHSJvew6k+pR2FE1zVw==
@@ -2722,7 +2722,7 @@ expo-server@^55.0.7:
   resolved "https://registry.yarnpkg.com/expo-server/-/expo-server-55.0.7.tgz#51bdb292daa87194ce19fe163e32d34b704d50b9"
   integrity sha512-Cc1btFyPsD9P4DT2xd1pG/uR96TLVMx0W+dPm9Gjk1uDV9xuzvMcUsY7nf9bt4U5pGyWWkCXmPJcKwWfdl51Pw==
 
-expo-splash-screen@~55.0.18:
+expo-splash-screen@^55.0.18:
   version "55.0.18"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-55.0.18.tgz#d746c41198c4b2e23c7ce5e2589e92e02e7c421d"
   integrity sha512-5+sA2L2e0v7GVWl2+j24lSNnC39HtycCCtJXHiC2N+voWLtZp0qMLAKZY/1vhkzjYzDzfkUcZiRzkdhwT9x+2Q==
