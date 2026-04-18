@@ -1,10 +1,9 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
-import PostHeader from "@/components/PostHeader";
-import Post from "@/components/Post";
 import { colors } from "@/theme/colors";
+import PostItem from "@/components/post/PostItem";
 
 export default function HomeScreen() {
   const {
@@ -28,20 +27,7 @@ export default function HomeScreen() {
         style={{ backgroundColor: colors.bodyBackground }}
         data={posts}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View>
-            <PostHeader
-              avatarUrl={item.author.avatarUrl}
-              author={item.author.displayName}
-            />
-
-            <Post
-              postImageUrl={item.coverUrl}
-              postTitle={item.title}
-              postPreview={item.preview}
-            />
-          </View>
-        )}
+        renderItem={({ item }) => <PostItem post={item} />}
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}
