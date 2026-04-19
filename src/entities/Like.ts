@@ -1,4 +1,6 @@
-export interface Like {
-  isLiked: boolean;
-  likesCount: number;
+export interface LikeResponse {
+  data: {
+    isLiked: boolean;
+    likesCount: number;
+  };
 }
