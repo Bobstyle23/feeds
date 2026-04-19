@@ -23,9 +23,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export const ExpandableText = ({ post }: Props) => {
-  console.log(post);
-
+function ExpandableText({ post }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = () => {
@@ -66,7 +64,7 @@ export const ExpandableText = ({ post }: Props) => {
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   textContainer: {
@@ -119,11 +117,6 @@ const styles = StyleSheet.create({
     height: 20,
     width: "100%",
   },
-
-  gradient: {
-    position: "absolute",
-    height: 20,
-    width: "100%",
-    bottom: 0,
-  },
 });
+
+export default ExpandableText;

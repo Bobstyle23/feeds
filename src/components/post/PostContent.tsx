@@ -1,4 +1,4 @@
-import { ExpandableText } from "../common/ExpandableText";
+import ExpandableText from "../common/ExpandableText";
 import { Post } from "@/entities/Post";
 
 interface Props {
