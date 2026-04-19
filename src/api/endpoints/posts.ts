@@ -5,10 +5,16 @@ import { Post, PostDetailResponse } from "@/entities/Post";
 interface Params {
   cursor?: string;
   limit?: number;
+  simulateError?: boolean;
 }
 
 export const getPosts = async (params?: Params): Promise<Posts> => {
-  const res = await api.get<PostsResponse>("/posts", { params });
+  const res = await api.get<PostsResponse>("/posts", {
+    params: {
+      ...params,
+      simulate_error: params?.simulateError,
+    },
+  });
   return res.data.data;
 };
 
