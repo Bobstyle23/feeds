@@ -7,3 +7,9 @@ export interface Comment {
   text: string;
   createdAt: string;
 }
+
+export interface CommentResponse {
+  data: {
+    comment: Comment;
+  };
+}
