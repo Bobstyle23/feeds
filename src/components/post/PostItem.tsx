@@ -4,6 +4,7 @@ import PostImage from "./PostImage";
 import PostContent from "./PostContent";
 import { Post } from "@/entities/Post";
 import { colors } from "@/theme/colors";
+import PostFooter from "./PostFooter";
 
 interface Props {
   post: Post;
@@ -17,6 +18,7 @@ function PostItem({ post }: Props) {
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} />
       <PostContent title={post.title} preview={post.preview} />
+      <PostFooter likes={post.likesCount} comments={post.commentsCount} />
     </View>
   );
 }
