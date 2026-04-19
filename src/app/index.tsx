@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
 import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
-import { useComments } from "@/hooks/useComments";
 
 export default function HomeScreen() {
   const {

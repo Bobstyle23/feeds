@@ -1,7 +1,6 @@
-import { PostDetailResponse, PostsResponse } from "@/entities/PostsResponse";
 import { api } from "../client";
-import { Posts } from "@/entities/Posts";
-import { Post } from "@/entities/Post";
+import { Posts, PostsResponse } from "@/entities/Posts";
+import { Post, PostDetailResponse } from "@/entities/Post";
 
 interface Params {
   cursor?: string;

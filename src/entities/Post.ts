@@ -13,3 +13,9 @@ export interface Post {
   tier: string;
   createdAt: string;
 }
+
+export interface PostDetailResponse {
+  data: {
+    post: Post;
+  };
+}
