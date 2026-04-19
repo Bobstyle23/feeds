@@ -33,6 +33,9 @@ export default function HomeScreen() {
         }}
         onEndReachedThreshold={0.5}
         refreshing={isRefetching}
+        initialNumToRender={3}
+        maxToRenderPerBatch={3}
+        removeClippedSubviews
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
