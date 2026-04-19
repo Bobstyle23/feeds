@@ -1,6 +1,8 @@
 import { fonts } from "@/theme/typography";
 import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import PaidIcon from "@/assets/images/paid-icon.svg";
+import { Button } from "../ui/Button";
+import { colors } from "@/theme/colors";
 interface Props {
   imageUrl: string;
   tier: string;
@@ -26,9 +28,12 @@ function PostImage({ imageUrl, tier }: Props) {
               Доступ откроется после доната
             </Text>
 
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Отправить донат</Text>
-            </TouchableOpacity>
+            <Button
+              title="Отправить донат"
+              onPress={() => {}}
+              style={styles.button}
+              textStyle={styles.buttonText}
+            />
           </View>
         </>
       )}
@@ -52,27 +57,14 @@ const styles = StyleSheet.create({
 
   content: {
     position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    inset: 0,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
   },
 
-  icon: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: "#6C2BD9",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
-  },
-
   text: {
-    color: "#fff",
+    color: colors.white,
     textAlign: "center",
     marginBlockStart: 8,
     marginBlockEnd: 13,
@@ -82,19 +74,15 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#6C2BD9",
-    borderRadius: 14,
     width: 239,
     height: 42,
-    justifyContent: "center",
   },
 
   buttonText: {
-    color: "#fff",
+    color: colors.white,
     fontFamily: fonts.semiBold,
     fontSize: 15,
     lineHeight: 26,
-    textAlign: "center",
   },
 });
 

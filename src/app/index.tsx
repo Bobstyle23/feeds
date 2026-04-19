@@ -11,6 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
 import { fonts } from "@/theme/typography";
+import { Button } from "@/components/ui/Button";
 
 export default function HomeScreen() {
   const {
@@ -21,16 +22,12 @@ export default function HomeScreen() {
     isFetchingNextPage,
     isRefetching,
     isError,
-    error,
     refetch,
-    isLoadingError,
   } = usePosts();
 
   const queryClient = useQueryClient();
 
   if (isLoading) return <ActivityIndicator />;
-
-  console.log(isLoadingError);
 
   if (isError) {
     return (
