@@ -18,7 +18,7 @@ function PostItem({ post }: Props) {
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} />
       <PostContent title={post.title} preview={post.preview} />
-      <PostFooter likes={post.likesCount} comments={post.commentsCount} />
+      <PostFooter post={post} />
     </View>
   );
 }
