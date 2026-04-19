@@ -1,41 +1,12 @@
-import { fonts } from "@/theme/typography";
-import { View, Text, StyleSheet } from "react-native";
+import { ExpandableText } from "../common/ExpandableText";
+import { Post } from "@/entities/Post";
 
 interface Props {
-  title: string;
-  preview: string;
+  post: Post;
 }
 
-function PostContent({ title, preview }: Props) {
-  return (
-    <View style={styles.textContainer}>
-      <Text style={styles.title}>{title}</Text>
-      <Text numberOfLines={2} style={styles.preview}>
-        {preview}
-      </Text>
-    </View>
-  );
+function PostContent({ post }: Props) {
+  return <ExpandableText post={post} />;
 }
-
-const styles = StyleSheet.create({
-  textContainer: {
-    marginBlockStart: 8,
-    marginBlockEnd: 16,
-    paddingInline: 16,
-  },
-
-  title: {
-    fontSize: 18,
-    lineHeight: 26,
-    fontFamily: fonts.bold,
-    marginBlockEnd: 8,
-  },
-
-  preview: {
-    fontFamily: fonts.medium,
-    fontSize: 15,
-    lineHeight: 20,
-  },
-});
 
 export default PostContent;

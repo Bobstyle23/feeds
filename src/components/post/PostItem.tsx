@@ -17,8 +17,8 @@ function PostItem({ post }: Props) {
     >
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} />
-      <PostContent title={post.title} preview={post.preview} />
-      <PostFooter post={post} />
+      <PostContent post={post} />
+      {post.tier !== "paid" ? <PostFooter post={post} /> : null}
     </View>
   );
 }
