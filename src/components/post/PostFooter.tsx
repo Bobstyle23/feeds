@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import LikeIcon from "@/assets/images/like-icon.svg";
 import LikeIconFull from "@/assets/images/like-icon-full.svg";
 import CommentIcon from "@/assets/images/comment-icon.svg";

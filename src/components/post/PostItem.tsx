@@ -12,9 +12,7 @@ interface Props {
 
 function PostItem({ post }: Props) {
   return (
-    <View
-      style={{ backgroundColor: colors.postBackground, marginBlockEnd: 16 }}
-    >
+    <View style={{ backgroundColor: colors.white, marginBlockEnd: 16 }}>
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} tier={post.tier} />
       <PostContent post={post} />

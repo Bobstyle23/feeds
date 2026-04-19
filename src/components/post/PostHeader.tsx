@@ -1,4 +1,5 @@
 import { Author } from "@/entities/Author";
+import { colors } from "@/theme/colors";
 import { fonts } from "@/theme/typography";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
   },
   avatar: {
     width: 40,
