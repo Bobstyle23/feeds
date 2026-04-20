@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { fonts } from "@/theme/typography";
 import { Post } from "@/entities/Post";
+import { colors } from "@/theme/colors";
 
 interface Props {
   post: Pick<Post, "title" | "tier" | "preview" | "body">;
@@ -50,12 +51,12 @@ function ExpandableText({ post }: Props) {
       {!expanded && post.body && (
         <View style={styles.overlayContainer}>
           <LinearGradient
-            colors={["rgba(255,255,255,0)", "#fff"]}
+            colors={["rgba(255,255,255,0)", colors.white]}
             style={styles.verticalGradient}
             start={{ x: 10, y: 0 }}
             end={{ x: -1, y: 0 }}
           />
-          <LinearGradient colors={["rgb(255,255,255)", "#fff"]}>
+          <LinearGradient colors={["rgb(255,255,255)", colors.white]}>
             <TouchableOpacity onPress={handleToggle}>
               <Text style={styles.bodyText}>Показать еще</Text>
             </TouchableOpacity>
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: fonts.medium,
     lineHeight: 20,
-    color: "#6115CD",
+    color: colors.primaryDeep,
   },
 
   paidContainer: {
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     width: 164,
     height: 26,
     borderRadius: 22,
-    backgroundColor: "#EEEFF1CC",
+    backgroundColor: "rgba(238, 239, 241, 0.8)",
   },
 
   overlayContainer: {

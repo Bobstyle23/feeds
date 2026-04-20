@@ -31,12 +31,26 @@ export default function HomeScreen() {
 
   if (isError) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginInline: 16,
+        }}
+      >
         <Text>Something went wrong 😢</Text>
 
-        <TouchableOpacity onPress={() => refetch()} style={{ marginTop: 12 }}>
-          <Text>Retry</Text>
-        </TouchableOpacity>
+        <Button
+          title="Повторить"
+          onPress={() => refetch()}
+          style={{ width: "100%", height: 42 }}
+          textStyle={{
+            fontSize: 15,
+            fontFamily: fonts.semiBold,
+            lineHeight: 26,
+          }}
+        />
       </View>
     );
   }
@@ -46,7 +60,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <FlatList
-        style={{ backgroundColor: colors.bodyBackground }}
+        style={{ backgroundColor: colors.background }}
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <PostItem post={item} />}
@@ -64,29 +78,21 @@ export default function HomeScreen() {
         ListFooterComponent={
           isFetchingNextPage ? (
             <ActivityIndicator />
-          ) : !isFetchingNextPage && hasNextPage ? (
+          ) : !isFetchingNextPage ? (
             <View style={{ marginInline: 16 }}>
-              <TouchableOpacity
+              <Button
+                title="Повторить загрузку след. страницы"
+                onPress={() => fetchNextPage()}
                 style={{
-                  backgroundColor: "#6C2BD9",
-                  borderRadius: 14,
+                  backgroundColor: colors.primary,
                   width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
                   height: 42,
                 }}
-                onPress={() => fetchNextPage()}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontFamily: fonts.medium,
-                    fontSize: 15,
-                  }}
-                >
-                  Повторить загрузку след. страницы
-                </Text>
-              </TouchableOpacity>
+                textStyle={{
+                  fontSize: 15,
+                  fontFamily: fonts.medium,
+                }}
+              />
             </View>
           ) : null
         }

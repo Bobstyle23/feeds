@@ -1,16 +1,11 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import LikeIcon from "@/assets/images/like-icon.svg";
 import LikeIconFull from "@/assets/images/like-icon-full.svg";
 import CommentIcon from "@/assets/images/comment-icon.svg";
 import { fonts } from "@/theme/typography";
 import { useToggleLike } from "@/hooks/useLike";
 import { Post } from "@/entities/Post";
+import { colors } from "@/theme/colors";
 
 type PostInfo = Pick<Post, "id" | "likesCount" | "commentsCount" | "isLiked">;
 
@@ -25,7 +20,7 @@ function PostFooter({ post }: Props) {
       <TouchableOpacity onPress={() => mutate(post.id)}>
         <View
           style={{
-            backgroundColor: post.isLiked ? "#FF2B75" : "#EFF2F7",
+            backgroundColor: post.isLiked ? colors.accent : colors.uiBase,
             ...styles.subContainer,
           }}
         >
@@ -36,14 +31,22 @@ function PostFooter({ post }: Props) {
           )}
 
           <Text
-            style={{ color: post.isLiked ? "#FFEAF1" : "", ...styles.text }}
+            style={{
+              color: post.isLiked ? colors.accentLight : "",
+              ...styles.text,
+            }}
           >
             {post.likesCount}
           </Text>
         </View>
       </TouchableOpacity>
 
-      <View style={styles.subContainer}>
+      <View
+        style={{
+          ...styles.subContainer,
+          backgroundColor: colors.uiBase,
+        }}
+      >
         <CommentIcon width={24} height={24} />
         <Text style={styles.text}>{post.commentsCount}</Text>
       </View>

@@ -1,5 +1,5 @@
 import { fonts } from "@/theme/typography";
-import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, Text } from "react-native";
 import PaidIcon from "@/assets/images/paid-icon.svg";
 import { Button } from "../ui/Button";
 import { colors } from "@/theme/colors";

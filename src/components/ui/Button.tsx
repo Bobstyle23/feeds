@@ -1,4 +1,4 @@
-import { buttonColors, colors, textColors } from "@/theme/colors";
+import { colors } from "@/theme/colors";
 import React from "react";
 import {
   Text,
@@ -55,16 +55,16 @@ const styles = StyleSheet.create({
   base: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: buttonColors.base,
+    backgroundColor: colors.primaryDeep,
     borderRadius: 14,
   },
 
   disabled: {
-    backgroundColor: buttonColors.disabled,
+    backgroundColor: colors.primaryMuted,
   },
 
   loading: {
-    backgroundColor: buttonColors.pressed,
+    backgroundColor: colors.primaryHover,
   },
 
   text: {
@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
   },
 
   pressed: {
-    backgroundColor: buttonColors.pressed,
+    backgroundColor: colors.primaryHover,
   },
 
   textPressed: {
-    color: textColors.pressed,
+    color: colors.primaryLight,
   },
 });
