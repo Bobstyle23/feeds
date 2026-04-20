@@ -110,14 +110,6 @@ getPosts({
 
 ---
 
-# 🧠 Project Structure
-
-```txt
-
-```
-
----
-
 # Features Implemented
 
 - Infinite scrolling posts feed
