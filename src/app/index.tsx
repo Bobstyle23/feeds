@@ -12,6 +12,7 @@ import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
 import { fonts } from "@/theme/typography";
 import { Button } from "@/components/ui/Button";
+import { ErrorState } from "@/components/states/ErrorState";
 
 export default function HomeScreen() {
   const {
@@ -27,33 +28,16 @@ export default function HomeScreen() {
 
   const queryClient = useQueryClient();
 
-  if (isLoading) return <ActivityIndicator />;
-
   if (isError) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          marginInline: 16,
-        }}
-      >
-        <Text>Something went wrong 😢</Text>
+    return <ErrorState onRetry={refetch} />;
+  }
 
-        <Button
-          title="Повторить"
-          onPress={() => refetch()}
-          style={{ width: "100%", height: 42 }}
-          textStyle={{
-            fontSize: 15,
-            fontFamily: fonts.semiBold,
-            lineHeight: 26,
-          }}
-        />
+  if (isLoading)
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator size="large" />
       </View>
     );
-  }
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
