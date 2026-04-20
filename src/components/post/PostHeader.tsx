@@ -1,5 +1,6 @@
 import { Author } from "@/entities/Author";
 import { colors } from "@/theme/colors";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -20,12 +21,12 @@ function PostHeader({ author }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingInline: 16,
-    paddingBlock: 12,
+    paddingInline: spacing[16],
+    paddingBlock: spacing[12],
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: spacing[12],
     backgroundColor: colors.white,
   },
   avatar: {
@@ -34,8 +35,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   author: {
-    fontSize: 15,
-    lineHeight: 20,
+    fontSize: fontSize.sm2,
+    lineHeight: lineHeight.sm,
     fontFamily: fonts.bold,
   },
 });

@@ -1,4 +1,5 @@
 import { colors } from "@/theme/colors";
+import { spacing } from "@/theme/spacing";
 import React from "react";
 import {
   Text,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.primaryDeep,
-    borderRadius: 14,
+    borderRadius: spacing[14],
   },
 
   disabled: {

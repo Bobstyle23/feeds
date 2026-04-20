@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { fonts } from "@/theme/typography";
 import { colors } from "@/theme/colors";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 
 interface Props {
   title: string;
@@ -71,33 +72,33 @@ function ExpandableText({ title, body, preview, tier }: Props) {
 
 const styles = StyleSheet.create({
   textContainer: {
-    marginBlockStart: 8,
-    marginBlockEnd: 16,
-    paddingInline: 16,
+    marginBlockStart: spacing[8],
+    marginBlockEnd: spacing[16],
+    paddingInline: spacing[16],
   },
   title: {
-    fontSize: 18,
-    lineHeight: 26,
+    fontSize: fontSize.lg,
+    lineHeight: lineHeight.lg,
     fontFamily: fonts.bold,
-    marginBlockEnd: 8,
+    marginBlockEnd: spacing[8],
   },
   preview: {
     fontFamily: fonts.medium,
-    fontSize: 15,
-    lineHeight: 20,
+    fontSize: fontSize.sm2,
+    lineHeight: lineHeight.sm,
   },
   bodyText: {
-    fontSize: 15,
+    fontSize: fontSize.sm2,
     fontFamily: fonts.medium,
-    lineHeight: 20,
+    lineHeight: lineHeight.sm,
     color: colors.primaryDeep,
   },
 
   paidContainer: {
-    marginBlockStart: 8,
-    marginBlockEnd: 12,
-    marginInline: 16,
-    gap: 8,
+    marginBlockStart: spacing[8],
+    marginBlockEnd: spacing[12],
+    marginInline: spacing[16],
+    gap: spacing[8],
   },
   paidText: {
     width: 164,

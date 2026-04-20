@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { Button } from "../ui/Button";
 import ErrorSvg from "@/assets/images/illustration_sticker.svg";
 import { fonts } from "@/theme/typography";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 
 export const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
   <View style={styles.container}>
@@ -21,13 +22,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginInline: 16,
-    gap: 16,
+    marginInline: spacing[16],
+    gap: spacing[16],
   },
   text: {
-    fontSize: 18,
+    fontSize: fontSize.lg,
     fontFamily: fonts.bold,
-    lineHeight: 26,
+    lineHeight: lineHeight.lg,
   },
 
   button: {
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 15,
+    fontSize: fontSize.sm2,
     fontFamily: fonts.semiBold,
-    lineHeight: 26,
+    lineHeight: lineHeight.lg,
   },
 });

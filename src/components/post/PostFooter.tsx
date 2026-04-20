@@ -6,6 +6,7 @@ import { fonts } from "@/theme/typography";
 import { useToggleLike } from "@/hooks/useLike";
 import { Post } from "@/entities/Post";
 import { colors } from "@/theme/colors";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 
 type PostInfo = Pick<Post, "id" | "likesCount" | "commentsCount" | "isLiked">;
 
@@ -57,9 +58,9 @@ function PostFooter({ post }: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 8,
-    paddingInlineStart: 16,
-    paddingBlockEnd: 12,
+    gap: spacing[8],
+    paddingInlineStart: spacing[16],
+    paddingBlockEnd: spacing[12],
   },
   subContainer: {
     width: 63,
@@ -68,14 +69,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 4,
-    paddingInlineStart: 6,
-    paddingInlineEnd: 12,
-    paddingBlock: 6,
+    gap: spacing[4],
+    paddingInlineStart: spacing[6],
+    paddingInlineEnd: spacing[12],
+    paddingBlock: spacing[6],
   },
   text: {
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: fontSize.xs2,
+    lineHeight: lineHeight.lg,
     fontFamily: fonts.bold,
   },
 });

@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Text } from "react-native";
 import PaidIcon from "@/assets/images/paid-icon.svg";
 import { Button } from "../ui/Button";
 import { colors } from "@/theme/colors";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 interface Props {
   imageUrl: string;
   tier: string;
@@ -60,17 +61,17 @@ const styles = StyleSheet.create({
     inset: 0,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing[24],
   },
 
   text: {
     color: colors.white,
     textAlign: "center",
-    marginBlockStart: 8,
-    marginBlockEnd: 13,
-    fontSize: 15,
+    marginBlockStart: spacing[8],
+    marginBlockEnd: spacing[13],
+    fontSize: fontSize.sm2,
     fontFamily: fonts.semiBold,
-    lineHeight: 20,
+    lineHeight: lineHeight.sm,
   },
 
   button: {
@@ -81,8 +82,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.white,
     fontFamily: fonts.semiBold,
-    fontSize: 15,
-    lineHeight: 26,
+    fontSize: fontSize.sm2,
+    lineHeight: lineHeight.lg,
   },
 });
 
