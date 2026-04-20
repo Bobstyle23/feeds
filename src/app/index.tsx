@@ -75,27 +75,7 @@ export default function HomeScreen() {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <ActivityIndicator />
-          ) : !isFetchingNextPage ? (
-            <View style={{ marginInline: 16 }}>
-              <Button
-                title="Повторить загрузку след. страницы"
-                onPress={() => fetchNextPage()}
-                style={{
-                  backgroundColor: colors.primary,
-                  width: "100%",
-                  height: 42,
-                }}
-                textStyle={{
-                  fontSize: 15,
-                  fontFamily: fonts.medium,
-                }}
-              />
-            </View>
-          ) : null
-        }
+        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       />
     </SafeAreaView>
   );
