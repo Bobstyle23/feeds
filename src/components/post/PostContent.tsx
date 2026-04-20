@@ -1,12 +1,23 @@
+import { usePost } from "@/hooks/usePost";
 import ExpandableText from "../common/ExpandableText";
-import { Post } from "@/entities/Post";
 
 interface Props {
-  post: Post;
+  postId: string;
 }
 
-function PostContent({ post }: Props) {
-  return <ExpandableText post={post} />;
+function PostContent({ postId }: Props) {
+  const { data: post } = usePost(postId);
+
+  if (!post) return null;
+
+  return (
+    <ExpandableText
+      title={post?.title}
+      body={post?.body}
+      preview={post?.preview}
+      tier={post?.tier}
+    />
+  );
 }
 
 export default PostContent;

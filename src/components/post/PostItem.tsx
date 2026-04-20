@@ -15,7 +15,7 @@ function PostItem({ post }: Props) {
     <View style={{ backgroundColor: colors.white, marginBlockEnd: 16 }}>
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} tier={post.tier} />
-      <PostContent post={post} />
+      <PostContent postId={post.id} />
       {post.tier !== "paid" ? <PostFooter post={post} /> : null}
     </View>
   );

@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { fonts } from "@/theme/typography";
-import { Post } from "@/entities/Post";
 import { colors } from "@/theme/colors";
 
 interface Props {
-  post: Pick<Post, "title" | "tier" | "preview" | "body">;
+  title: string;
+  tier: string;
+  preview: string;
+  body: string;
 }
 
 if (
@@ -24,7 +26,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function ExpandableText({ post }: Props) {
+function ExpandableText({ title, body, preview, tier }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = () => {
@@ -32,7 +34,7 @@ function ExpandableText({ post }: Props) {
     setExpanded(true);
   };
 
-  if (post.tier == "paid") {
+  if (tier == "paid") {
     return (
       <View style={styles.paidContainer}>
         <Text style={styles.paidText}></Text>
@@ -43,12 +45,12 @@ function ExpandableText({ post }: Props) {
 
   return (
     <View style={styles.textContainer}>
-      <Text style={styles.title}>{post.title}</Text>
+      <Text style={styles.title}>{title}</Text>
       <Text style={styles.preview} numberOfLines={expanded ? undefined : 2}>
-        {expanded ? post.body || post.preview : post.preview}
+        {expanded ? body || preview : preview}
       </Text>
 
-      {!expanded && post.body && (
+      {!expanded && body && (
         <View style={styles.overlayContainer}>
           <LinearGradient
             colors={["rgba(255,255,255,0)", colors.white]}
