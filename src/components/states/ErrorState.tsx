@@ -6,7 +6,7 @@ import { fonts } from "@/theme/typography";
 export const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
   <View style={styles.container}>
     <ErrorSvg width={112} height={112} />
-    <Text style={styles.text}>Не удалось загрузить публикацию</Text>
+    <Text style={styles.text}>Не удалось загрузить публикации</Text>
     <Button
       title="Повторить"
       onPress={onRetry}

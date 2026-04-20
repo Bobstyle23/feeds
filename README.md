@@ -1,4 +1,4 @@
-# 📱 React Native Test (Mecenate / feeds) App
+# React Native Test (Mecenate / feeds) App
 
 This project is a mobile application built with **React Native (Expo)**, **TypeScript**, **React Query**, and **MobX**.
 It consumes a test API and demonstrates handling of loading, error, and empty states, along with optimistic updates and modern UI patterns.
@@ -120,6 +120,6 @@ getPosts({
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 MukhammadBobur Pakhriev
