@@ -1,17 +1,10 @@
-import {
-  FlatList,
-  ActivityIndicator,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, ActivityIndicator, View } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
 import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
-import { fonts } from "@/theme/typography";
-import { Button } from "@/components/ui/Button";
+
 import { ErrorState } from "@/components/states/ErrorState";
 
 export default function HomeScreen() {

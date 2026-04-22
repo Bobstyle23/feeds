@@ -28,6 +28,7 @@ export const fontSize = {
 
 export const lineHeight = {
   xs: 16,
+  xs2: 18,
   sm: 20,
   md: 24,
   lg: 26,

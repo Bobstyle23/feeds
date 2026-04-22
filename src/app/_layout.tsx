@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import HomeScreen from ".";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { Stack } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,7 +23,9 @@ export default function TabLayout() {
 
   return (
     <QueryProvider>
-      <HomeScreen />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
     </QueryProvider>
   );
 }

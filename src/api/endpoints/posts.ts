@@ -6,6 +6,7 @@ interface Params {
   cursor?: string;
   limit?: number;
   simulateError?: boolean;
+  tier?: string;
 }
 
 export const getPosts = async (params?: Params): Promise<Posts> => {
@@ -13,6 +14,7 @@ export const getPosts = async (params?: Params): Promise<Posts> => {
     params: {
       ...params,
       simulate_error: params?.simulateError,
+      tier: params?.tier,
     },
   });
   return res.data.data;
