@@ -10,11 +10,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
 import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
-import { fonts } from "@/theme/typography";
-import { Button } from "@/components/ui/Button";
 import { ErrorState } from "@/components/states/ErrorState";
-import UserProfileSkeleton from "@/components/skeleton/UserProfileSkeleton";
 import { EmptyState } from "@/components/states/EmptyState";
+import PostSkeleton from "@/components/skeleton/PostSkeleton";
 
 export default function HomeScreen() {
   const {
@@ -36,8 +34,6 @@ export default function HomeScreen() {
     return <ErrorState onRetry={refetch} />;
   }
 
-  console.log(isFetching, isLoading, isRefetching);
-
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
   // if (isLoading)
@@ -56,7 +52,7 @@ export default function HomeScreen() {
       {isLoading &&
         skeletons.map((skeleton, index) => (
           <View key={index}>
-            <UserProfileSkeleton />
+            <PostSkeleton />
           </View>
         ))}
       <FlatList
@@ -75,9 +71,7 @@ export default function HomeScreen() {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
-        ListEmptyComponent={
-          isLoading ? <UserProfileSkeleton /> : <EmptyState />
-        }
+        ListEmptyComponent={isLoading ? <PostSkeleton /> : <EmptyState />}
         ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       />
     </SafeAreaView>
