@@ -1,16 +1,13 @@
 import { spacing } from "@/theme/spacing";
-import { Skeleton } from "moti/skeleton";
 import { memo } from "react";
-import { StyleSheet, useColorScheme, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import PostSkeleton from "./PostSkeleton";
 
 function PostFooterSkeleton() {
-  const colorScheme = useColorScheme();
-  const colorMode = colorScheme === "dark" ? "dark" : "light";
-
   return (
     <View style={styles.container}>
-      <Skeleton colorMode={colorMode} width={64} height={36} radius={22} />
-      <Skeleton colorMode={colorMode} width={64} height={36} radius={22} />
+      <PostSkeleton width={64} height={36} radius={22} />
+      <PostSkeleton width={64} height={36} radius={22} />
     </View>
   );
 }

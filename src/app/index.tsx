@@ -12,7 +12,7 @@ import { colors } from "@/theme/colors";
 import PostItem from "@/components/post/PostItem";
 import { ErrorState } from "@/components/states/ErrorState";
 import { EmptyState } from "@/components/states/EmptyState";
-import PostSkeleton from "@/components/skeleton/PostSkeleton";
+import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 
 export default function HomeScreen() {
   const {
@@ -50,9 +50,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       {isLoading &&
-        skeletons.map((skeleton, index) => (
+        skeletons.map((_, index) => (
           <View key={index}>
-            <PostSkeleton />
+            <PostsSkeleton />
           </View>
         ))}
       <FlatList
@@ -71,7 +71,7 @@ export default function HomeScreen() {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
-        ListEmptyComponent={isLoading ? <PostSkeleton /> : <EmptyState />}
+        ListEmptyComponent={isLoading ? <PostsSkeleton /> : <EmptyState />}
         ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       />
     </SafeAreaView>
