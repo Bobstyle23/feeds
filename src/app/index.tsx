@@ -36,17 +36,6 @@ export default function HomeScreen() {
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
-  // if (isLoading)
-  //   return (
-  //     // <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-  //     //   <UserProfileSkeleton />
-  //     // </View>
-  //
-  //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  //
   return (
     <SafeAreaView>
       {isLoading &&
