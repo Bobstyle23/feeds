@@ -1,5 +1,3 @@
-// app/(tabs)/index.tsx
-
 import { FlatList, ActivityIndicator, View } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,29 +7,29 @@ import PostItem from "@/components/post/PostItem";
 
 import { ErrorState } from "@/components/states/ErrorState";
 import SegmentedTabs from "@/components/common/SegmentedTabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 import { EmptyState } from "@/components/states/EmptyState";
+import { getPosts } from "@/api/endpoints/posts";
 
 type Tabs = "all" | "free" | "paid";
 
 export default function Feed() {
   const [activeTab, setActiveTab] = useState<Tabs>("all");
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const {
     data,
-    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isRefetching,
     isError,
     isFetching,
+    isLoading,
     refetch,
   } = usePosts(activeTab);
 
   const queryClient = useQueryClient();
-  const skeletons = [1, 2, 3, 4, 5];
 
   if (isError) {
     return <ErrorState onRetry={refetch} />;
@@ -39,16 +37,38 @@ export default function Feed() {
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
+  useEffect(() => {
+    if (data) setIsFirstLoad(false);
+  }, [data]);
+
+  if (isFirstLoad && isFetching) {
+    return (
+      <SafeAreaView>
+        <PostsSkeleton />
+      </SafeAreaView>
+    );
+  }
+
+  const handlePrefetch = async (value: string) => {
+    const existing = queryClient.getQueryData(["posts", value]);
+    if (!existing) {
+      await queryClient.prefetchInfiniteQuery({
+        queryKey: ["posts", value],
+        queryFn: ({ pageParam = null }) =>
+          getPosts({
+            cursor: pageParam,
+            tier: value,
+            limit: 10,
+          }),
+      });
+    }
+
+    setActiveTab(value as Tabs);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <SegmentedTabs value={activeTab} onChange={setActiveTab} />
-      {isLoading ||
-        (!posts &&
-          skeletons.map((_, index) => (
-            <View key={index}>
-              <PostsSkeleton />
-            </View>
-          )))}
+      <SegmentedTabs value={activeTab} onChange={handlePrefetch} />
       <FlatList
         style={{ backgroundColor: colors.background }}
         data={posts}
@@ -58,7 +78,8 @@ export default function Feed() {
           if (hasNextPage) fetchNextPage();
         }}
         onEndReachedThreshold={0.5}
-        refreshing={isRefetching}
+        // refreshing={isRefetching}
+        refreshing={isFetching && !isFirstLoad}
         initialNumToRender={3}
         maxToRenderPerBatch={3}
         removeClippedSubviews

@@ -21,7 +21,7 @@ type Tabs = "all" | "free" | "paid";
 
 type Props = {
   value: Tabs;
-  onChange: (val: Tabs) => void;
+  onChange: (value: Tabs) => void;
 };
 
 export default function SegmentedTabs({ value, onChange }: Props) {

@@ -1,5 +1,5 @@
 // app/post/[id].tsx
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { usePost } from "@/hooks/usePost";
 import { SafeAreaView } from "react-native-safe-area-context";
