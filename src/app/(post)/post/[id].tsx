@@ -8,18 +8,26 @@ import PostHeader from "@/components/post/PostHeader";
 import PostImage from "@/components/post/PostImage";
 import PostContent from "@/components/post/PostContent";
 import PostFooter from "@/components/post/PostFooter";
+import ExpandableText from "@/components/common/ExpandableText";
+import { EmptyState } from "@/components/states/EmptyState";
 
 export default function PostScreen() {
   const { id } = useLocalSearchParams();
   const { data: post } = usePost(id as string);
 
-  if (!post) return null;
+  if (!post) return <EmptyState />;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
       <PostHeader author={post.author} />
       <PostImage imageUrl={post.coverUrl} tier={post.tier} />
-      <PostContent postId={post.id} />
+      <ExpandableText
+        title={post.title}
+        body={post.body}
+        preview={post.preview}
+        tier={post.tier}
+        mode="full"
+      />
       <PostFooter post={post} />
     </SafeAreaView>
   );
