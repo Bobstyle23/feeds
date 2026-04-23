@@ -1,12 +1,9 @@
-// app/post/[id].tsx
-import { Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { usePost } from "@/hooks/usePost";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "@/theme/colors";
 import PostHeader from "@/components/post/PostHeader";
 import PostImage from "@/components/post/PostImage";
-import PostContent from "@/components/post/PostContent";
 import PostFooter from "@/components/post/PostFooter";
 import ExpandableText from "@/components/common/ExpandableText";
 import { EmptyState } from "@/components/states/EmptyState";

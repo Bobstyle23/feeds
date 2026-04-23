@@ -31,10 +31,6 @@ export default function Feed() {
 
   const queryClient = useQueryClient();
 
-  if (isError) {
-    return <ErrorState onRetry={refetch} />;
-  }
-
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
 
   useEffect(() => {
@@ -47,6 +43,10 @@ export default function Feed() {
         <PostsSkeleton />
       </SafeAreaView>
     );
+  }
+
+  if (isError) {
+    return <ErrorState onRetry={refetch} />;
   }
 
   const handlePrefetch = async (value: string) => {
