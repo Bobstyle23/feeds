@@ -1,24 +1,24 @@
 import { toggleLike } from "@/api/endpoints/like";
+import { Post } from "@/entities/Post";
+import { Posts } from "@/entities/Posts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useToggleLike = () => {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (postId: string) => toggleLike(postId),
-
+  return useMutation(toggleLike, {
     onMutate: async (postId) => {
       await queryClient.cancelQueries({ queryKey: ["posts"] });
 
-      const previousData = queryClient.getQueryData(["posts"]);
+      const previousData = queryClient.getQueriesData({ queryKey: ["posts"] });
 
-      queryClient.setQueryData(["posts"], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+        if (!oldData) return oldData;
 
         return {
-          ...old,
-          pages: old.pages.map((page: any) => ({
+          ...oldData,
+          pages: oldData.pages?.map((page: Posts) => ({
             ...page,
-            posts: page.posts.map((post: any) =>
+            posts: page.posts.map((post: Post) =>
               post.id === postId
                 ? {
                     ...post,
@@ -37,9 +37,9 @@ export const useToggleLike = () => {
     },
 
     onError: (_err, _vars, context) => {
-      if (context?.previousData) {
-        queryClient.setQueryData(["posts"], context.previousData);
-      }
+      context?.previousData?.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
     },
   });
 };

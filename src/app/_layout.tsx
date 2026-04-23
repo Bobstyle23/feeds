@@ -23,9 +23,7 @@ export default function TabLayout() {
 
   return (
     <QueryProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
     </QueryProvider>
   );
 }
