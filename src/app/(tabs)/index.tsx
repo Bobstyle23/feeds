@@ -1,4 +1,4 @@
-import { FlatList, ActivityIndicator, View } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,7 +9,6 @@ import { ErrorState } from "@/components/states/ErrorState";
 import SegmentedTabs from "@/components/common/SegmentedTabs";
 import { useEffect, useState } from "react";
 import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
-import { EmptyState } from "@/components/states/EmptyState";
 import { getPosts } from "@/api/endpoints/posts";
 
 type Tabs = "all" | "free" | "paid";
@@ -32,7 +31,6 @@ export default function Feed() {
   const queryClient = useQueryClient();
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
-
   useEffect(() => {
     if (data) setIsFirstLoad(false);
   }, [data]);
@@ -85,7 +83,9 @@ export default function Feed() {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
-        ListEmptyComponent={isLoading ? <PostsSkeleton /> : <EmptyState />}
+        ListEmptyComponent={
+          isLoading ? <PostsSkeleton /> : <ErrorState onRetry={refetch} />
+        }
         ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
       />
     </SafeAreaView>
