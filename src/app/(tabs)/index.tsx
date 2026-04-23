@@ -78,7 +78,6 @@ export default function Feed() {
           if (hasNextPage) fetchNextPage();
         }}
         onEndReachedThreshold={0.5}
-        // refreshing={isRefetching}
         refreshing={isFetching && !isFirstLoad}
         initialNumToRender={3}
         maxToRenderPerBatch={3}
