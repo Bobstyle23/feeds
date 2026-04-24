@@ -46,9 +46,51 @@ export class SocketStore {
   }
 
   onLikeUpdated(data: any) {
+    const { postId, likesCount } = data;
+
     this.queryClient.invalidateQueries({ queryKey: ["posts"] });
-    this.queryClient.invalidateQueries({ queryKey: ["post", data.postId] });
+    this.queryClient.invalidateQueries({ queryKey: ["post", postId] });
   }
+  //
+  // onLikeUpdated(data: any) {
+  //   const { postId, likesCount } = data;
+  //
+  //   this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+  //     if (!oldData) return oldData;
+  //
+  //     return {
+  //       ...oldData,
+  //       pages: oldData.pages.map((page: any) => ({
+  //         ...page,
+  //         posts: page.posts.map((post: any) =>
+  //           post.id === postId
+  //             ? {
+  //                 ...post,
+  //                 likesCount,
+  //               }
+  //             : post,
+  //         ),
+  //       })),
+  //     };
+  //   });
+  //
+  //   this.queryClient.setQueryData(["post", postId], (oldData: any) => {
+  //     if (!oldData) return oldData;
+  //
+  //     console.log(oldData);
+  //
+  //     return {
+  //       ...oldData,
+  //       data: {
+  //         ...oldData.data,
+  //         post: {
+  //           ...oldData.data.post,
+  //           likesCount,
+  //         },
+  //       },
+  //     };
+  //   });
+  // }
 
   onCommentAdded(data: any) {
     const postId = data.postId;
