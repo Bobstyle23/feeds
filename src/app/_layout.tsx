@@ -3,6 +3,8 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
+import { QueryClient } from "@tanstack/react-query";
+import { SocketStore } from "@/stores/socketStore";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,9 +17,18 @@ export default function TabLayout() {
     ManropeSemiBold: require("../../assets/fonts/Manrope-SemiBold.otf"),
   });
 
+  const queryClient = new QueryClient();
+  const socketStore = new SocketStore(queryClient);
+
   useEffect(() => {
     if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
+
+  useEffect(() => {
+    socketStore.connect();
+
+    return () => socketStore.disconnect();
+  }, []);
 
   if (!loaded) return null;
 

@@ -49,10 +49,14 @@ export const useToggleLike = () => {
       return { previousPosts, previousPost };
     },
 
-    onError: (_err, _vars, context) => {
+    onError: (_err, postId, context) => {
       context?.previousPosts?.forEach(([key, data]) => {
         queryClient.setQueryData(key, data);
       });
+
+      if (context?.previousPost) {
+        queryClient.setQueryData(["post", postId], context.previousPost);
+      }
     },
   });
 };
