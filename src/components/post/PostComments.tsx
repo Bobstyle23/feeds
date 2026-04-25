@@ -6,30 +6,37 @@ import { fonts } from "@/theme/typography";
 import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 interface Props {
   post: Post;
 }
 
 function PostComments({ post }: Props) {
+  const [sort, setSort] = useState<boolean>(false);
   const { data, isError, isLoading, isFetching, hasNextPage, fetchNextPage } =
     useComments(post.id);
 
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
+
+  const sortedComments = sort ? [...comments].toReversed() : comments;
   const queryClient = useQueryClient();
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.commentsCount}>
           {post.commentsCount} комментариев
         </Text>
-        <Pressable onPress={() => console.log("pressed")}>
-          <Text style={styles.sortText}>Сначала новые</Text>
+        <Pressable onPress={() => setSort(!sort)}>
+          <Text style={styles.sortText}>
+            Сначала {sort ? "старые" : "новые"}
+          </Text>
         </Pressable>
       </View>
       <FlatList
         style={{ maxHeight: 360 }}
-        data={comments}
+        data={sortedComments}
         keyExtractor={(comment) => comment.id}
         renderItem={({ item }) => (
           <PostComment author={item.author} comment={item} />
