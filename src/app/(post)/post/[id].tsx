@@ -7,6 +7,7 @@ import PostImage from "@/components/post/PostImage";
 import PostFooter from "@/components/post/PostFooter";
 import ExpandableText from "@/components/common/ExpandableText";
 import { EmptyState } from "@/components/states/EmptyState";
+import PostComments from "@/components/post/PostComments";
 
 export default function PostScreen() {
   const { id } = useLocalSearchParams();
@@ -26,6 +27,7 @@ export default function PostScreen() {
         mode="full"
       />
       <PostFooter post={post} />
+      <PostComments post={post} />
     </SafeAreaView>
   );
 }
