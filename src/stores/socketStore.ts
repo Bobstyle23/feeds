@@ -1,6 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import { QueryClient } from "@tanstack/react-query";
 import { authStore } from "./authStore";
+import { Posts } from "@/entities/Posts";
+import { Post } from "@/entities/Post";
 
 export class SocketStore {
   ws?: WebSocket;
@@ -10,6 +12,8 @@ export class SocketStore {
   }
 
   connect() {
+    if (this.ws) return;
+
     this.ws = new WebSocket(
       `wss://k8s.mectest.ru/test-app/ws?token=${authStore.token}`,
     );
@@ -19,18 +23,22 @@ export class SocketStore {
 
     this.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log("WS even", data);
-
       this.handleEvent(data);
     };
 
     this.ws.onclose = () => {
       console.log("WS disconnected");
+      this.ws = undefined;
+    };
+
+    this.ws.onerror = (error) => {
+      console.log("WS error", error);
     };
   }
 
   disconnect() {
     this.ws?.close();
+    this.ws = undefined;
   }
 
   handleEvent(data: any) {
@@ -48,49 +56,29 @@ export class SocketStore {
   onLikeUpdated(data: any) {
     const { postId, likesCount } = data;
 
-    this.queryClient.invalidateQueries({ queryKey: ["posts"] });
-    this.queryClient.invalidateQueries({ queryKey: ["post", postId] });
+    this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+      if (!oldData) return oldData;
+
+      return {
+        ...oldData,
+        pages: oldData.pages.map((page: Posts) => ({
+          ...page,
+          posts: page.posts.map((post: Post) =>
+            post.id === postId ? { ...post, likesCount } : post,
+          ),
+        })),
+      };
+    });
+
+    this.queryClient.setQueryData(["post", postId], (oldPost: Post | any) => {
+      if (!oldPost) return oldPost;
+
+      return {
+        ...oldPost,
+        likesCount,
+      };
+    });
   }
-  //
-  // onLikeUpdated(data: any) {
-  //   const { postId, likesCount } = data;
-  //
-  //   this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
-  //     if (!oldData) return oldData;
-  //
-  //     return {
-  //       ...oldData,
-  //       pages: oldData.pages.map((page: any) => ({
-  //         ...page,
-  //         posts: page.posts.map((post: any) =>
-  //           post.id === postId
-  //             ? {
-  //                 ...post,
-  //                 likesCount,
-  //               }
-  //             : post,
-  //         ),
-  //       })),
-  //     };
-  //   });
-  //
-  //   this.queryClient.setQueryData(["post", postId], (oldData: any) => {
-  //     if (!oldData) return oldData;
-  //
-  //     console.log(oldData);
-  //
-  //     return {
-  //       ...oldData,
-  //       data: {
-  //         ...oldData.data,
-  //         post: {
-  //           ...oldData.data.post,
-  //           likesCount,
-  //         },
-  //       },
-  //     };
-  //   });
-  // }
 
   onCommentAdded(data: any) {
     const postId = data.postId;

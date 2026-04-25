@@ -7,9 +7,6 @@ export const useToggleLike = () => {
   const queryClient = useQueryClient();
   return useMutation(toggleLike, {
     onMutate: async (postId) => {
-      await queryClient.cancelQueries({ queryKey: ["posts"] });
-      await queryClient.cancelQueries({ queryKey: ["post", postId] });
-
       const previousPosts = queryClient.getQueriesData({ queryKey: ["posts"] });
       const previousPost = queryClient.getQueryData(["post", postId]);
 
