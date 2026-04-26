@@ -1,8 +1,13 @@
 import { Author } from "@/entities/Author";
 import { Comment } from "@/entities/Comment";
 import PostHeader from "./PostHeader";
-import { spacing } from "@/theme/spacing";
-import { StyleSheet, Text, View } from "react-native";
+import { fontSize, lineHeight, spacing } from "@/theme/spacing";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import LikeIcon from "@/assets/images/heart.svg";
+import LikeIconFull from "@/assets/images/heart_solid.svg";
+import { useState } from "react";
+import { fonts } from "@/theme/typography";
+import { colors } from "@/theme/colors";
 
 interface Props {
   author: Author;
@@ -10,6 +15,14 @@ interface Props {
 }
 
 function PostComment({ author, comment }: Props) {
+  const [liked, setLiked] = useState(false);
+  const [likedCount, setLikedCount] = useState(0);
+
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikedCount(liked ? likedCount - 1 : likedCount + 1);
+  };
+
   return (
     <View style={styles.container}>
       <PostHeader
@@ -20,7 +33,13 @@ function PostComment({ author, comment }: Props) {
           paddingInline: 0,
         }}
       />
-      <Text>Like</Text>
+      <View style={styles.likeContainer}>
+        <Pressable onPress={handleLike}>
+          {!liked ? <LikeIcon /> : <LikeIconFull />}
+        </Pressable>
+
+        <Text style={styles.likeCount}>{likedCount}</Text>
+      </View>
     </View>
   );
 }
@@ -31,6 +50,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     gap: spacing[12],
+  },
+  likeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[6],
+  },
+  likeCount: {
+    fontFamily: fonts.bold,
+    fontSize: fontSize.xs2,
+    lineHeight: lineHeight.xs2,
+    color: colors.tabName,
   },
 });
 

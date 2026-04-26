@@ -5,7 +5,7 @@ import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
 import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 
-type AuthorInfo = Pick<Author, "avatarUrl" | "displayName">;
+type AuthorInfo = Pick<Author, "avatarUrl" | "displayName" | "bio">;
 type CommentInfo = Pick<Comment, "text" | "createdAt">;
 
 interface Props {
