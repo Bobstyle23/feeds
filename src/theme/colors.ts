@@ -1,5 +1,6 @@
 export const colors = {
   white: "#FFFFFF",
+  black: "#000",
   background: "#F5F8FD",
   tabBorder: "#e8ecef",
   tabName: "#57626f",

@@ -2,7 +2,7 @@ import { Author } from "@/entities/Author";
 import { Comment } from "@/entities/Comment";
 import PostHeader from "./PostHeader";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import LikeIcon from "@/assets/images/heart.svg";
 import LikeIconFull from "@/assets/images/heart_solid.svg";
 import { useState } from "react";

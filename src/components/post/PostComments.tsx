@@ -9,13 +9,14 @@ import {
   StyleSheet,
   Pressable,
   FlatList,
-  ActivityIndicator,
+  TextInput,
 } from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import PostCommentSkeleton from "../skeleton/PostCommentSkeleton";
-import { has } from "mobx";
+import SendIconDefault from "@/assets/images/send-icon-disabled.svg";
+import SendIconActive from "@/assets/images/send-icon-active.svg";
 
 interface Props {
   post: Post;
@@ -23,6 +24,7 @@ interface Props {
 
 function PostComments({ post }: Props) {
   const [sort, setSort] = useState<boolean>(false);
+  const [inputText, setInputText] = useState("");
   const {
     data,
     isError,
@@ -79,6 +81,25 @@ function PostComments({ post }: Props) {
           isFetchingNextPage ? <PostCommentSkeleton /> : null
         }
       />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Ваш комментарий"
+          cursorColor={colors.black}
+          selectionColor={colors.black}
+        />
+        {inputText ? (
+          <Pressable>
+            <SendIconActive width={30} height={30} />
+          </Pressable>
+        ) : (
+          <Pressable>
+            <SendIconDefault width={30} height={30} />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
@@ -106,6 +127,25 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm2,
     lineHeight: lineHeight.sm,
     color: colors.primaryDeep,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  input: {
+    height: 40,
+    borderRadius: 20,
+    borderColor: "#EFF2F7",
+    borderWidth: 2,
+    paddingBlock: 10,
+    paddingInline: spacing[16],
+    color: colors.black,
+    fontFamily: fonts.medium,
+    fontSize: fontSize.sm2,
+    lineHeight: lineHeight.sm,
+    maxWidth: 320,
+    width: "100%",
   },
 });
 
