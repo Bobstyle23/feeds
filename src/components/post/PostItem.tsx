@@ -9,6 +9,7 @@ import { spacing } from "@/theme/spacing";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { getPostById } from "@/api/endpoints/posts";
+import { getComments } from "@/api/endpoints/comments";
 
 interface Props {
   post: Post;
@@ -22,6 +23,12 @@ function PostItem({ post }: Props) {
     queryClient.prefetchQuery({
       queryKey: ["post", post.id],
       queryFn: () => getPostById(post.id),
+    });
+
+    queryClient.prefetchInfiniteQuery({
+      queryKey: ["comments", post.id],
+      queryFn: ({ pageParam = null }) =>
+        getComments(post.id, { cursor: pageParam }),
     });
 
     router.push(`/post/${post.id}`);

@@ -3,10 +3,19 @@ import { useComments } from "@/hooks/useComments";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
-import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import PostCommentSkeleton from "../skeleton/PostCommentSkeleton";
+import { has } from "mobx";
 
 interface Props {
   post: Post;
@@ -14,12 +23,24 @@ interface Props {
 
 function PostComments({ post }: Props) {
   const [sort, setSort] = useState<boolean>(false);
-  const { data, isError, isLoading, isFetching, hasNextPage, fetchNextPage } =
-    useComments(post.id);
+  const {
+    data,
+    isError,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useComments(post.id);
 
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
 
-  const sortedComments = sort ? [...comments].toReversed() : comments;
+  const sortedComments = sort
+    ? [...comments].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
+    : comments;
   const queryClient = useQueryClient();
 
   return (
@@ -38,9 +59,13 @@ function PostComments({ post }: Props) {
         style={{ maxHeight: 360 }}
         data={sortedComments}
         keyExtractor={(comment) => comment.id}
-        renderItem={({ item }) => (
-          <PostComment author={item.author} comment={item} />
-        )}
+        renderItem={({ item }) =>
+          isLoading ? (
+            <PostCommentSkeleton key={item.id} />
+          ) : (
+            <PostComment author={item.author} comment={item} />
+          )
+        }
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}
@@ -49,6 +74,10 @@ function PostComments({ post }: Props) {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["post", post.id] });
         }}
+        ListEmptyComponent={isLoading ? <PostCommentSkeleton /> : null}
+        ListFooterComponent={
+          isFetchingNextPage ? <PostCommentSkeleton /> : null
+        }
       />
     </View>
   );

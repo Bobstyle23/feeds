@@ -10,6 +10,7 @@ import SegmentedTabs from "@/components/common/SegmentedTabs";
 import { useEffect, useState } from "react";
 import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 import { getPosts } from "@/api/endpoints/posts";
+import PostSkeleton from "@/components/skeleton/PostSkeleton";
 
 type Tabs = "all" | "free" | "paid";
 
@@ -71,7 +72,9 @@ export default function Feed() {
         style={{ backgroundColor: colors.background }}
         data={posts}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <PostItem post={item} />}
+        renderItem={({ item }) =>
+          isLoading ? <PostSkeleton key={item.id} /> : <PostItem post={item} />
+        }
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}
