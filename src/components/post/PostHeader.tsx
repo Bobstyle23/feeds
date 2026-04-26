@@ -17,14 +17,14 @@ interface Props {
 function PostHeader({ author, comment, style }: Props) {
   return (
     <View style={[styles.container, style]}>
-      <Image source={{ uri: author.avatarUrl }} style={styles.avatar} />
+      <Image source={{ uri: author?.avatarUrl }} style={styles.avatar} />
       {comment ? (
         <View style={styles.textContainer}>
-          <Text style={styles.author}>{author.displayName}</Text>
+          <Text style={styles.author}>{author?.displayName}</Text>
           <Text style={styles.comment}>{comment?.text}</Text>
         </View>
       ) : (
-        <Text style={styles.author}>{author.displayName}</Text>
+        <Text style={styles.author}>{author?.displayName}</Text>
       )}
     </View>
   );

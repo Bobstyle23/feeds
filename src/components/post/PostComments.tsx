@@ -1,5 +1,5 @@
 import { Post } from "@/entities/Post";
-import { useComments } from "@/hooks/useComments";
+import { useComments, useSendComment } from "@/hooks/useComments";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
@@ -35,6 +35,10 @@ function PostComments({ post }: Props) {
     fetchNextPage,
   } = useComments(post.id);
 
+  const { mutate } = useSendComment();
+
+  const queryClient = useQueryClient();
+
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
 
   const sortedComments = sort
@@ -43,7 +47,13 @@ function PostComments({ post }: Props) {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       )
     : comments;
-  const queryClient = useQueryClient();
+
+  const handleSendComment = () => {
+    if (!inputText.trim()) return;
+    mutate({ postId: post.id, text: inputText });
+
+    setInputText("");
+  };
 
   return (
     <View style={styles.container}>
@@ -65,7 +75,7 @@ function PostComments({ post }: Props) {
           isLoading ? (
             <PostCommentSkeleton key={item.id} />
           ) : (
-            <PostComment author={item.author} comment={item} />
+            <PostComment key={item.id} author={item.author} comment={item} />
           )
         }
         onEndReached={() => {
@@ -91,7 +101,7 @@ function PostComments({ post }: Props) {
           selectionColor={colors.black}
         />
         {inputText ? (
-          <Pressable>
+          <Pressable onPress={handleSendComment}>
             <SendIconActive width={30} height={30} />
           </Pressable>
         ) : (

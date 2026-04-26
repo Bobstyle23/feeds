@@ -12,9 +12,9 @@ export const getComments = async (
   return res.data.data;
 };
 
-export const postComment = async (postId: string, params: { text: string }) => {
+export const postComment = async (postId: string, text: string) => {
   const res = await api.post<CommentResponse>(`/posts/${postId}/comments`, {
-    params,
+    text,
   });
   return res.data.data;
 };

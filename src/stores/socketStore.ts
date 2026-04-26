@@ -24,6 +24,7 @@ export class SocketStore {
     this.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       this.handleEvent(data);
+      console.log("WS Event: ", event.data);
     };
 
     this.ws.onclose = () => {
@@ -56,6 +57,8 @@ export class SocketStore {
   onLikeUpdated(data: any) {
     const { postId, likesCount } = data;
 
+    console.log({ likesCount, data });
+
     this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
       if (!oldData) return oldData;
 
@@ -81,7 +84,7 @@ export class SocketStore {
   }
 
   onCommentAdded(data: any) {
-    const postId = data.postId;
+    const { postId } = data;
 
     this.queryClient.invalidateQueries({
       queryKey: ["comments", postId],
@@ -89,6 +92,32 @@ export class SocketStore {
 
     this.queryClient.invalidateQueries({
       queryKey: ["posts"],
+    });
+
+    this.queryClient.invalidateQueries({ queryKey: ["post", postId] });
+
+    this.queryClient.setQueryData(["post", postId], (oldData: any) => {
+      if (!oldData) return oldData;
+      return {
+        ...oldData,
+        commentsCount: oldData.commentsCount + 1,
+      };
+    });
+
+    this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+      if (!oldData) return oldData;
+
+      return {
+        ...oldData,
+        pages: oldData.pages.map((page: Posts) => ({
+          ...page,
+          posts: page.posts.map((post: Post) =>
+            post.id === postId
+              ? { ...post, commentsCount: post.commentsCount + 1 }
+              : post,
+          ),
+        })),
+      };
     });
   }
 }
