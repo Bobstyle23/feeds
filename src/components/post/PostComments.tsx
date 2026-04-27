@@ -10,10 +10,13 @@ import {
   Pressable,
   FlatList,
   TextInput,
+  LayoutAnimation,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PostCommentSkeleton from "../skeleton/PostCommentSkeleton";
 import SendIconDefault from "@/assets/images/send-icon-disabled.svg";
 import SendIconActive from "@/assets/images/send-icon-active.svg";
@@ -25,9 +28,9 @@ interface Props {
 function PostComments({ post }: Props) {
   const [sort, setSort] = useState<boolean>(false);
   const [inputText, setInputText] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const {
     data,
-    isError,
     isLoading,
     isFetching,
     isFetchingNextPage,
@@ -38,6 +41,7 @@ function PostComments({ post }: Props) {
   const { mutate } = useSendComment();
 
   const queryClient = useQueryClient();
+  const inputRef = useRef<TextInput>(null);
 
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
 
@@ -53,6 +57,8 @@ function PostComments({ post }: Props) {
     mutate({ postId: post.id, text: inputText });
 
     setInputText("");
+    setIsFocused(false);
+    inputRef.current?.blur();
   };
 
   return (
@@ -91,25 +97,36 @@ function PostComments({ post }: Props) {
           isFetchingNextPage ? <PostCommentSkeleton /> : null
         }
       />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Ваш комментарий"
-          cursorColor={colors.black}
-          selectionColor={colors.black}
-        />
-        {inputText ? (
-          <Pressable onPress={handleSendComment}>
-            <SendIconActive width={30} height={30} />
-          </Pressable>
-        ) : (
-          <Pressable>
-            <SendIconDefault width={30} height={30} />
-          </Pressable>
-        )}
-      </View>
+      <TouchableWithoutFeedback onPress={() => inputRef.current?.blur()}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused]}
+            value={inputText}
+            ref={inputRef}
+            onChangeText={setInputText}
+            placeholder="Ваш комментарий"
+            cursorColor={colors.black}
+            selectionColor={colors.black}
+            onFocus={() => {
+              LayoutAnimation.configureNext(
+                LayoutAnimation.Presets.easeInEaseOut,
+              );
+              setIsFocused(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+            underlineColorAndroid="transparent"
+          />
+          {inputText ? (
+            <Pressable onPress={handleSendComment}>
+              <SendIconActive width={30} height={30} />
+            </Pressable>
+          ) : (
+            <Pressable>
+              <SendIconDefault width={30} height={30} />
+            </Pressable>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -144,18 +161,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   input: {
+    padding: 0,
+    margin: 0,
+    textAlignVertical: "top",
     height: 40,
+    width: "100%",
+    maxWidth: 320,
     borderRadius: 20,
-    borderColor: "#EFF2F7",
-    borderWidth: 2,
-    paddingBlock: 10,
-    paddingInline: spacing[16],
-    color: colors.black,
+    backgroundColor: colors.uiBase,
+    paddingVertical: spacing[10],
+    paddingHorizontal: spacing[16],
     fontFamily: fonts.medium,
     fontSize: fontSize.sm2,
     lineHeight: lineHeight.sm,
-    maxWidth: 320,
-    width: "100%",
+  },
+
+  inputFocused: {
+    borderColor: colors.uiBase,
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    color: colors.black,
   },
 });
 
