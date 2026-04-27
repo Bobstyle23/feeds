@@ -8,7 +8,6 @@ import PostFooter from "./PostFooter";
 import { spacing } from "@/theme/spacing";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { getPostById } from "@/api/endpoints/posts";
 import { getComments } from "@/api/endpoints/comments";
 
 interface Props {
@@ -20,11 +19,6 @@ function PostItem({ post }: Props) {
   const queryClient = useQueryClient();
 
   const handlePress = () => {
-    queryClient.prefetchQuery({
-      queryKey: ["post", post.id],
-      queryFn: () => getPostById(post.id),
-    });
-
     queryClient.prefetchInfiniteQuery({
       queryKey: ["comments", post.id],
       queryFn: ({ pageParam = null }) =>
