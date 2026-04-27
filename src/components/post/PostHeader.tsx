@@ -1,31 +1,22 @@
-import { Author } from "@/entities/Author";
-import { Comment } from "@/entities/Comment";
+import { usePost } from "@/hooks/usePost";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
 import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 
-type AuthorInfo = Pick<Author, "avatarUrl" | "displayName" | "bio">;
-type CommentInfo = Pick<Comment, "text" | "createdAt">;
-
 interface Props {
-  author: AuthorInfo;
-  comment?: CommentInfo;
-  style?: ViewStyle;
+  postId: string;
 }
 
-function PostHeader({ author, comment, style }: Props) {
+function PostHeader({ postId }: Props) {
+  const { data: post } = usePost(postId);
+
+  if (!post) return;
+
   return (
-    <View style={[styles.container, style]}>
-      <Image source={{ uri: author?.avatarUrl }} style={styles.avatar} />
-      {comment ? (
-        <View style={styles.textContainer}>
-          <Text style={styles.author}>{author?.displayName}</Text>
-          <Text style={styles.comment}>{comment?.text}</Text>
-        </View>
-      ) : (
-        <Text style={styles.author}>{author?.displayName}</Text>
-      )}
+    <View style={styles.container}>
+      <Image source={{ uri: post.author.avatarUrl }} style={styles.avatar} />
+      <Text style={styles.author}>{post.author.displayName}</Text>
     </View>
   );
 }
@@ -39,10 +30,7 @@ const styles = StyleSheet.create({
     gap: spacing[12],
     backgroundColor: colors.white,
   },
-  textContainer: {
-    justifyContent: "center",
-    gap: spacing[4],
-  },
+
   avatar: {
     width: 40,
     height: 40,
@@ -52,11 +40,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm2,
     lineHeight: lineHeight.sm,
     fontFamily: fonts.bold,
-  },
-  comment: {
-    fontFamily: fonts.medium,
-    fontSize: fontSize.sm,
-    lineHeight: lineHeight.sm,
   },
 });
 

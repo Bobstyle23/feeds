@@ -12,7 +12,6 @@ import {
   TextInput,
   LayoutAnimation,
   TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
@@ -81,7 +80,7 @@ function PostComments({ post }: Props) {
           isLoading ? (
             <PostCommentSkeleton key={item.id} />
           ) : (
-            <PostComment key={item.id} author={item.author} comment={item} />
+            <PostComment key={item.id} comment={item} />
           )
         }
         onEndReached={() => {

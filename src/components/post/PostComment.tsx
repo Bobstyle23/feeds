@@ -1,6 +1,4 @@
-import { Author } from "@/entities/Author";
 import { Comment } from "@/entities/Comment";
-import PostHeader from "./PostHeader";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import LikeIcon from "@/assets/images/heart.svg";
@@ -8,13 +6,13 @@ import LikeIconFull from "@/assets/images/heart_solid.svg";
 import { useState } from "react";
 import { fonts } from "@/theme/typography";
 import { colors } from "@/theme/colors";
+import PostCommentHeader from "./PostCommentHeader";
 
 interface Props {
-  author: Author;
   comment: Comment;
 }
 
-function PostComment({ author, comment }: Props) {
+function PostComment({ comment }: Props) {
   const [liked, setLiked] = useState(false);
   const [likedCount, setLikedCount] = useState(0);
 
@@ -25,14 +23,7 @@ function PostComment({ author, comment }: Props) {
 
   return (
     <View style={styles.container}>
-      <PostHeader
-        author={author}
-        comment={comment}
-        style={{
-          paddingBlock: spacing[8],
-          paddingInline: 0,
-        }}
-      />
+      <PostCommentHeader comment={comment} />
       <View style={styles.likeContainer}>
         <Pressable onPress={handleLike}>
           {!liked ? <LikeIcon /> : <LikeIconFull />}
