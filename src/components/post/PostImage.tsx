@@ -4,21 +4,25 @@ import PaidIcon from "@/assets/images/paid-icon.svg";
 import { Button } from "../ui/Button";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
+import { usePost } from "@/hooks/usePost";
 interface Props {
-  imageUrl: string;
-  tier: string;
+  postId: string;
 }
 
-function PostImage({ imageUrl, tier }: Props) {
+function PostImage({ postId }: Props) {
+  const { data: post } = usePost(postId);
+
+  if (!post) return;
+
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: imageUrl }}
+        source={{ uri: post.coverUrl }}
         style={styles.image}
-        blurRadius={tier == "paid" ? 40 : 0}
+        blurRadius={post.tier == "paid" ? 40 : 0}
       />
 
-      {tier == "paid" && (
+      {post.tier == "paid" && (
         <>
           <View style={styles.overlay} />
 

@@ -18,7 +18,7 @@ export default function PostScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
       <PostHeader author={post.author} />
-      <PostImage imageUrl={post.coverUrl} tier={post.tier} />
+      <PostImage postId={post.id} />
       <ExpandableText
         title={post.title}
         body={post.body}
