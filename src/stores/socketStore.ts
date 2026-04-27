@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { authStore } from "./authStore";
 import { Posts } from "@/entities/Posts";
 import { Post } from "@/entities/Post";
+import { Comments } from "@/entities/Comments";
 
 export class SocketStore {
   ws?: WebSocket;
@@ -57,8 +58,6 @@ export class SocketStore {
   onLikeUpdated(data: any) {
     const { postId, likesCount } = data;
 
-    console.log({ likesCount, data });
-
     this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
       if (!oldData) return oldData;
 
@@ -84,17 +83,20 @@ export class SocketStore {
   }
 
   onCommentAdded(data: any) {
-    const { postId } = data;
+    const { postId, comment } = data;
 
-    this.queryClient.invalidateQueries({
-      queryKey: ["comments", postId],
+    this.queryClient.setQueryData(["comments", postId], (oldData: any) => {
+      if (!oldData) return oldData;
+
+      return {
+        ...oldData,
+        pages: oldData.pages.map((page: Comments, index: number) =>
+          index === 0
+            ? { ...page, comments: [comment, ...page.comments] }
+            : page,
+        ),
+      };
     });
-
-    this.queryClient.invalidateQueries({
-      queryKey: ["posts"],
-    });
-
-    this.queryClient.invalidateQueries({ queryKey: ["post", postId] });
 
     this.queryClient.setQueryData(["post", postId], (oldData: any) => {
       if (!oldData) return oldData;
@@ -113,7 +115,10 @@ export class SocketStore {
           ...page,
           posts: page.posts.map((post: Post) =>
             post.id === postId
-              ? { ...post, commentsCount: post.commentsCount + 1 }
+              ? {
+                  ...post,
+                  commentsCount: post.commentsCount + 1,
+                }
               : post,
           ),
         })),
