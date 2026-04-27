@@ -26,7 +26,7 @@ export default function PostScreen() {
         tier={post.tier}
         mode="full"
       />
-      <PostFooter post={post} />
+      <PostFooter postId={post.id} />
       <PostComments post={post} />
     </SafeAreaView>
   );

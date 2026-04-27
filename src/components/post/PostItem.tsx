@@ -41,7 +41,7 @@ function PostItem({ postId }: Props) {
         <PostHeader author={post.author} />
         <PostImage imageUrl={post.coverUrl} tier={post.tier} />
         <PostContent postId={post.id} />
-        {post.tier !== "paid" ? <PostFooter post={post} /> : null}
+        {post.tier !== "paid" ? <PostFooter postId={post.id} /> : null}
       </View>
     </Pressable>
   );
