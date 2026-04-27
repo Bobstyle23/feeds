@@ -2,21 +2,26 @@ import { Pressable, View } from "react-native";
 import PostHeader from "./PostHeader";
 import PostImage from "./PostImage";
 import PostContent from "./PostContent";
-import { Post } from "@/entities/Post";
 import { colors } from "@/theme/colors";
 import PostFooter from "./PostFooter";
 import { spacing } from "@/theme/spacing";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { getComments } from "@/api/endpoints/comments";
+import { usePost } from "@/hooks/usePost";
+import { EmptyState } from "../states/EmptyState";
 
 interface Props {
-  post: Post;
+  postId: string;
 }
 
-function PostItem({ post }: Props) {
+function PostItem({ postId }: Props) {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { data: post } = usePost(postId);
+
+  if (!post) return <EmptyState />;
 
   const handlePress = () => {
     queryClient.prefetchInfiniteQuery({
