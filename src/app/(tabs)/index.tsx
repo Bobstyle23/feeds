@@ -72,9 +72,7 @@ export default function Feed() {
         style={{ backgroundColor: colors.background }}
         data={posts}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) =>
-          isLoading ? <PostSkeleton key={item.id} /> : <PostItem post={item} />
-        }
+        renderItem={({ item }) => <PostItem post={item} />}
         onEndReached={() => {
           if (hasNextPage) fetchNextPage();
         }}
