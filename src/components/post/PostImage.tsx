@@ -7,6 +7,12 @@ import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { usePost } from "@/hooks/usePost";
 
 import { BlurView } from "expo-blur";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { useEffect } from "react";
 
 interface Props {
   postId: string;
@@ -17,6 +23,16 @@ function PostImage({ postId }: Props) {
 
   if (!post) return;
 
+  const opacity = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
+
+  useEffect(() => {
+    opacity.value = withTiming(1, { duration: 300 });
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image
@@ -26,12 +42,8 @@ function PostImage({ postId }: Props) {
       />
 
       {post.tier == "paid" && (
-        <>
-          <BlurView
-            intensity={50}
-            tint="dark"
-            style={StyleSheet.absoluteFillObject}
-          />
+        <Animated.View style={[StyleSheet.absoluteFillObject, animatedStyle]}>
+          <BlurView intensity={50} tint="dark" style={{ flex: 1 }} />
 
           <View style={styles.content}>
             <PaidIcon width={42} height={42} />
@@ -47,7 +59,7 @@ function PostImage({ postId }: Props) {
               textStyle={styles.buttonText}
             />
           </View>
-        </>
+        </Animated.View>
       )}
     </View>
   );
