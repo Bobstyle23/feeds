@@ -30,7 +30,7 @@ function PostItem({ postId }: Props) {
         getComments(post.id, { cursor: pageParam }),
     });
 
-    router.push(`/post/${post.id}`);
+    if (post.tier !== "paid") router.push(`/post/${post.id}`);
   };
 
   return (
