@@ -67,10 +67,15 @@ const PostComments = observer(function PostComments({ post }: Props) {
 
   useEffect(() => {
     if (inputText.length > 0) {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       inputRef.current?.focus();
     }
   }, [post.id]);
+
+  useEffect(() => {
+    if (inputText.length > 0) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    }
+  }, [inputText]);
 
   return (
     <View style={styles.container}>
