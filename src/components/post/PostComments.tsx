@@ -15,7 +15,7 @@ import {
   RefreshControl,
 } from "react-native";
 import PostComment from "./PostComment";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { commentDraftStore } from "@/stores/commentDraftStore";
 import PostCommentSkeleton from "../skeleton/PostCommentSkeleton";
@@ -64,6 +64,13 @@ const PostComments = observer(function PostComments({ post }: Props) {
     setIsFocused(false);
     inputRef.current?.blur();
   };
+
+  useEffect(() => {
+    if (inputText.length > 0) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      inputRef.current?.focus();
+    }
+  }, [post.id]);
 
   return (
     <View style={styles.container}>
