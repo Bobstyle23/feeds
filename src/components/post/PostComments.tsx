@@ -12,6 +12,7 @@ import {
   TextInput,
   LayoutAnimation,
   TouchableWithoutFeedback,
+  RefreshControl,
 } from "react-native";
 import PostComment from "./PostComment";
 import { useQueryClient } from "@tanstack/react-query";
@@ -32,9 +33,11 @@ function PostComments({ post }: Props) {
     data,
     isLoading,
     isFetching,
+    isRefetching,
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    refetch,
   } = useComments(post.id);
 
   const { mutate } = useSendComment();
@@ -89,8 +92,11 @@ function PostComments({ post }: Props) {
         onEndReachedThreshold={0.5}
         refreshing={isFetching}
         onRefresh={() => {
-          queryClient.invalidateQueries({ queryKey: ["post", post.id] });
+          queryClient.invalidateQueries({ queryKey: ["comments", post.id] });
         }}
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+        }
         ListEmptyComponent={isLoading ? <PostCommentSkeleton /> : null}
         ListFooterComponent={
           isFetchingNextPage ? <PostCommentSkeleton /> : null
