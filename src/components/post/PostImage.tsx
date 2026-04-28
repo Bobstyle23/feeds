@@ -5,6 +5,9 @@ import { Button } from "../ui/Button";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { usePost } from "@/hooks/usePost";
+
+import { BlurView } from "expo-blur";
+
 interface Props {
   postId: string;
 }
@@ -24,7 +27,11 @@ function PostImage({ postId }: Props) {
 
       {post.tier == "paid" && (
         <>
-          <View style={styles.overlay} />
+          <BlurView
+            intensity={50}
+            tint="dark"
+            style={StyleSheet.absoluteFillObject}
+          />
 
           <View style={styles.content}>
             <PaidIcon width={42} height={42} />
@@ -53,11 +60,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 393,
-  },
-
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
 
   content: {
