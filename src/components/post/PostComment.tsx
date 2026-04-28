@@ -1,24 +1,23 @@
 import { Comment } from "@/entities/Comment";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import LikeIcon from "@/assets/images/heart.svg";
 import LikeIconFull from "@/assets/images/heart_solid.svg";
-import { useState } from "react";
 import { fonts } from "@/theme/typography";
 import { colors } from "@/theme/colors";
+import { observer } from "mobx-react-lite";
 import PostCommentHeader from "./PostCommentHeader";
+import { commentLikeStore } from "@/stores/commentLikeStore";
 
 interface Props {
   comment: Comment;
 }
 
-function PostComment({ comment }: Props) {
-  const [liked, setLiked] = useState(false);
-  const [likedCount, setLikedCount] = useState(0);
+const PostComment = observer(function PostComment({ comment }: Props) {
+  const { isLiked, count } = commentLikeStore.getState(comment.id, 0);
 
   const handleLike = () => {
-    setLiked(!liked);
-    setLikedCount(liked ? likedCount - 1 : likedCount + 1);
+    commentLikeStore.toggle(comment.id, 0);
   };
 
   return (
@@ -26,14 +25,14 @@ function PostComment({ comment }: Props) {
       <PostCommentHeader comment={comment} />
       <View style={styles.likeContainer}>
         <Pressable onPress={handleLike}>
-          {!liked ? <LikeIcon /> : <LikeIconFull />}
+          {!isLiked ? <LikeIcon /> : <LikeIconFull />}
         </Pressable>
 
-        <Text style={styles.likeCount}>{likedCount}</Text>
+        <Text style={styles.likeCount}>{count}</Text>
       </View>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
