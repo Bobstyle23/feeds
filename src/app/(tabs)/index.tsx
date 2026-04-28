@@ -1,4 +1,4 @@
-import { FlatList, ActivityIndicator } from "react-native";
+import { FlatList, ActivityIndicator, RefreshControl } from "react-native";
 import { usePosts } from "@/hooks/usePosts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +10,6 @@ import SegmentedTabs from "@/components/common/SegmentedTabs";
 import { useEffect, useState } from "react";
 import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 import { getPosts } from "@/api/endpoints/posts";
-import PostSkeleton from "@/components/skeleton/PostSkeleton";
 
 type Tabs = "all" | "free" | "paid";
 
@@ -25,6 +24,7 @@ export default function Feed() {
     isFetchingNextPage,
     isError,
     isFetching,
+    isRefetching,
     isLoading,
     refetch,
   } = usePosts(activeTab);
@@ -84,6 +84,9 @@ export default function Feed() {
         onRefresh={() => {
           queryClient.invalidateQueries({ queryKey: ["posts"] });
         }}
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+        }
         ListEmptyComponent={
           isLoading ? <PostsSkeleton /> : <ErrorState onRetry={refetch} />
         }
