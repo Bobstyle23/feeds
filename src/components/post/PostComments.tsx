@@ -15,8 +15,9 @@ import {
   RefreshControl,
 } from "react-native";
 import PostComment from "./PostComment";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { commentDraftStore } from "@/stores/commentDraftStore";
 import PostCommentSkeleton from "../skeleton/PostCommentSkeleton";
 import SendIconDefault from "@/assets/images/send-icon-disabled.svg";
 import SendIconActive from "@/assets/images/send-icon-active.svg";
@@ -25,9 +26,8 @@ interface Props {
   post: Post;
 }
 
-function PostComments({ post }: Props) {
+const PostComments = observer(function PostComments({ post }: Props) {
   const [sort, setSort] = useState<boolean>(false);
-  const [inputText, setInputText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const {
     data,
@@ -40,9 +40,10 @@ function PostComments({ post }: Props) {
     refetch,
   } = useComments(post.id);
 
+  const inputText = commentDraftStore.getDraft(post.id);
+
   const { mutate } = useSendComment();
 
-  const queryClient = useQueryClient();
   const inputRef = useRef<TextInput>(null);
 
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
@@ -55,10 +56,11 @@ function PostComments({ post }: Props) {
     : comments;
 
   const handleSendComment = () => {
-    if (!inputText.trim()) return;
-    mutate({ postId: post.id, text: inputText });
+    const text = commentDraftStore.getDraft(post.id);
+    if (!text.trim()) return;
+    mutate({ postId: post.id, text: text });
 
-    setInputText("");
+    commentDraftStore.clearDraft(post.id);
     setIsFocused(false);
     inputRef.current?.blur();
   };
@@ -91,9 +93,6 @@ function PostComments({ post }: Props) {
         }}
         onEndReachedThreshold={0.5}
         refreshing={isFetching}
-        onRefresh={() => {
-          queryClient.invalidateQueries({ queryKey: ["comments", post.id] });
-        }}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
@@ -108,7 +107,7 @@ function PostComments({ post }: Props) {
             style={[styles.input, isFocused && styles.inputFocused]}
             value={inputText}
             ref={inputRef}
-            onChangeText={setInputText}
+            onChangeText={(text) => commentDraftStore.setDraft(post.id, text)}
             placeholder="Ваш комментарий"
             cursorColor={colors.black}
             selectionColor={colors.black}
@@ -134,7 +133,7 @@ function PostComments({ post }: Props) {
       </TouchableWithoutFeedback>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
