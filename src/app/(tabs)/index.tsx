@@ -12,6 +12,7 @@ import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 import { getPosts } from "@/api/endpoints/posts";
 import { observer } from "mobx-react-lite";
 import { postsStore, Tier } from "@/stores/postsStore";
+import { commentLikeStore } from "@/stores/commentLikeStore";
 
 export default observer(function Feed() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
@@ -31,9 +32,14 @@ export default observer(function Feed() {
   const queryClient = useQueryClient();
 
   const posts = data?.pages.flatMap((post) => post.posts) ?? [];
+
   useEffect(() => {
     if (data) setIsFirstLoad(false);
   }, [data]);
+
+  useEffect(() => {
+    commentLikeStore.load();
+  }, []);
 
   if (isFirstLoad && isFetching) {
     return (

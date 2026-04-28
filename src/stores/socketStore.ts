@@ -20,6 +20,7 @@ export class SocketStore {
     );
     this.ws.onopen = () => {
       console.log("WS connected");
+      this.queryClient.invalidateQueries({ queryKey: ["posts"] });
     };
 
     this.ws.onmessage = (event) => {
@@ -58,7 +59,7 @@ export class SocketStore {
   onLikeUpdated(data: any) {
     const { postId, likesCount } = data;
 
-    this.queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+    this.queryClient.setQueriesData(["posts", "all"], (oldData: any) => {
       if (!oldData) return oldData;
 
       return {
