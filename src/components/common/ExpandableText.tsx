@@ -13,11 +13,14 @@ import { fonts } from "@/theme/typography";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 
+type Mode = "preview" | "full";
+
 interface Props {
   title: string;
   tier: string;
   preview: string;
   body: string;
+  mode?: Mode;
 }
 
 if (
@@ -27,7 +30,13 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function ExpandableText({ title, body, preview, tier }: Props) {
+function ExpandableText({
+  title,
+  body,
+  preview,
+  tier,
+  mode = "preview",
+}: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const handleToggle = () => {
@@ -44,14 +53,16 @@ function ExpandableText({ title, body, preview, tier }: Props) {
     );
   }
 
+  const showFull = mode === "full" || expanded;
+
   return (
     <View style={styles.textContainer}>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.preview} numberOfLines={expanded ? undefined : 2}>
-        {expanded ? body || preview : preview}
+      <Text style={styles.preview} numberOfLines={showFull ? undefined : 2}>
+        {showFull ? body || preview : preview}
       </Text>
 
-      {!expanded && body && (
+      {mode === "preview" && !expanded && body && (
         <View style={styles.overlayContainer}>
           <LinearGradient
             colors={["rgba(255,255,255,0)", colors.white]}
@@ -111,7 +122,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: 120,
-    right: 16,
+    right: spacing[16],
     alignItems: "flex-end",
   },
 

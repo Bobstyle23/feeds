@@ -1,24 +1,23 @@
 import { toggleLike } from "@/api/endpoints/like";
+import { Post } from "@/entities/Post";
+import { Posts } from "@/entities/Posts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useToggleLike = () => {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (postId: string) => toggleLike(postId),
-
+  return useMutation(toggleLike, {
     onMutate: async (postId) => {
-      await queryClient.cancelQueries({ queryKey: ["posts"] });
+      const previousPosts = queryClient.getQueriesData({ queryKey: ["posts"] });
+      const previousPost = queryClient.getQueryData(["post", postId]);
 
-      const previousData = queryClient.getQueryData(["posts"]);
-
-      queryClient.setQueryData(["posts"], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueriesData({ queryKey: ["posts"] }, (oldData: any) => {
+        if (!oldData) return oldData;
 
         return {
-          ...old,
-          pages: old.pages.map((page: any) => ({
+          ...oldData,
+          pages: oldData.pages?.map((page: Posts) => ({
             ...page,
-            posts: page.posts.map((post: any) =>
+            posts: page.posts.map((post: Post) =>
               post.id === postId
                 ? {
                     ...post,
@@ -33,12 +32,27 @@ export const useToggleLike = () => {
         };
       });
 
-      return { previousData };
+      queryClient.setQueryData(["post", postId], (oldPost: Post | any) => {
+        if (!oldPost) return oldPost;
+        return {
+          ...oldPost,
+          isLiked: !oldPost.isLiked,
+          likesCount: oldPost.isLiked
+            ? oldPost.likesCount - 1
+            : oldPost.likesCount + 1,
+        };
+      });
+
+      return { previousPosts, previousPost };
     },
 
-    onError: (_err, _vars, context) => {
-      if (context?.previousData) {
-        queryClient.setQueryData(["posts"], context.previousData);
+    onError: (_err, postId, context) => {
+      context?.previousPosts?.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
+
+      if (context?.previousPost) {
+        queryClient.setQueryData(["post", postId], context.previousPost);
       }
     },
   });

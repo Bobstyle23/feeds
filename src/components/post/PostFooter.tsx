@@ -4,27 +4,47 @@ import LikeIconFull from "@/assets/images/like-icon-full.svg";
 import CommentIcon from "@/assets/images/comment-icon.svg";
 import { fonts } from "@/theme/typography";
 import { useToggleLike } from "@/hooks/useLike";
-import { Post } from "@/entities/Post";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
-
-type PostInfo = Pick<Post, "id" | "likesCount" | "commentsCount" | "isLiked">;
+import { usePost } from "@/hooks/usePost";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
+import * as Haptics from "expo-haptics";
 
 interface Props {
-  post: PostInfo;
+  postId: string;
 }
 
-function PostFooter({ post }: Props) {
+function PostFooter({ postId }: Props) {
   const { mutate } = useToggleLike();
+  const { data: post } = usePost(postId);
+
+  if (!post) return;
+
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    backgroundColor: post.isLiked ? colors.accent : colors.uiBase,
+  }));
+
+  const handleLike = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    scale.value = withSpring(1.2, {}, () => {
+      scale.value = withSpring(1);
+    });
+
+    mutate(post.id);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => mutate(post.id)}>
-        <View
-          style={{
-            backgroundColor: post.isLiked ? colors.accent : colors.uiBase,
-            ...styles.subContainer,
-          }}
-        >
+      <TouchableOpacity onPress={handleLike}>
+        <Animated.View style={[styles.subContainer, animatedStyle]}>
           {post.isLiked ? (
             <LikeIconFull width={24} height={24} />
           ) : (
@@ -39,7 +59,7 @@ function PostFooter({ post }: Props) {
           >
             {post.likesCount}
           </Text>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
 
       <View

@@ -2,6 +2,7 @@ export const spacing = {
   4: 4,
   6: 6,
   8: 8,
+  10: 10,
   12: 12,
   13: 13,
   14: 14,
@@ -28,6 +29,7 @@ export const fontSize = {
 
 export const lineHeight = {
   xs: 16,
+  xs2: 18,
   sm: 20,
   md: 24,
   lg: 26,

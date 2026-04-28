@@ -1,20 +1,22 @@
-import { Author } from "@/entities/Author";
+import { usePost } from "@/hooks/usePost";
 import { colors } from "@/theme/colors";
 import { fontSize, lineHeight, spacing } from "@/theme/spacing";
 import { fonts } from "@/theme/typography";
-import { Image, StyleSheet, Text, View } from "react-native";
-
-type AuthorInfo = Pick<Author, "avatarUrl" | "displayName">;
+import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 
 interface Props {
-  author: AuthorInfo;
+  postId: string;
 }
 
-function PostHeader({ author }: Props) {
+function PostHeader({ postId }: Props) {
+  const { data: post } = usePost(postId);
+
+  if (!post) return;
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri: author.avatarUrl }} style={styles.avatar} />
-      <Text style={styles.author}>{author.displayName}</Text>
+      <Image source={{ uri: post.author.avatarUrl }} style={styles.avatar} />
+      <Text style={styles.author}>{post.author.displayName}</Text>
     </View>
   );
 }
@@ -23,12 +25,12 @@ const styles = StyleSheet.create({
   container: {
     paddingInline: spacing[16],
     paddingBlock: spacing[12],
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: spacing[12],
     backgroundColor: colors.white,
   },
+
   avatar: {
     width: 40,
     height: 40,
