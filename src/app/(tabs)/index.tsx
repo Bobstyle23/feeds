@@ -10,11 +10,10 @@ import SegmentedTabs from "@/components/common/SegmentedTabs";
 import { useEffect, useState } from "react";
 import PostsSkeleton from "@/components/skeleton/PostsSkeleton";
 import { getPosts } from "@/api/endpoints/posts";
+import { observer } from "mobx-react-lite";
+import { postsStore, Tier } from "@/stores/postsStore";
 
-type Tabs = "all" | "free" | "paid";
-
-export default function Feed() {
-  const [activeTab, setActiveTab] = useState<Tabs>("all");
+export default observer(function Feed() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const {
@@ -27,7 +26,7 @@ export default function Feed() {
     isRefetching,
     isLoading,
     refetch,
-  } = usePosts(activeTab);
+  } = usePosts(postsStore.tier);
 
   const queryClient = useQueryClient();
 
@@ -62,12 +61,12 @@ export default function Feed() {
       });
     }
 
-    setActiveTab(value as Tabs);
+    postsStore.setTier(value as Tier);
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <SegmentedTabs value={activeTab} onChange={handlePrefetch} />
+      <SegmentedTabs value={postsStore.tier} onChange={handlePrefetch} />
       <FlatList
         style={{ backgroundColor: colors.background }}
         data={posts}
@@ -81,9 +80,6 @@ export default function Feed() {
         initialNumToRender={3}
         maxToRenderPerBatch={3}
         removeClippedSubviews
-        onRefresh={() => {
-          queryClient.invalidateQueries({ queryKey: ["posts"] });
-        }}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
@@ -94,4 +90,4 @@ export default function Feed() {
       />
     </SafeAreaView>
   );
-}
+});
