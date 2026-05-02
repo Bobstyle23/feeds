@@ -42,18 +42,22 @@ const PostComments = observer(function PostComments({ post }: Props) {
 
   const inputText = commentDraftStore.getDraft(post.id);
 
-  const { mutate } = useSendComment();
+  const { mutate, status } = useSendComment();
 
   const inputRef = useRef<TextInput>(null);
 
   const comments = data?.pages.flatMap((comment) => comment.comments) ?? [];
 
+  const uniqueComments = Array.from(
+    new Map(comments.map((comment) => [comment.id, comment])).values(),
+  );
+
   const sortedComments = sort
-    ? [...comments].sort(
+    ? [...uniqueComments].sort(
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       )
-    : comments;
+    : uniqueComments;
 
   const handleSendComment = () => {
     const text = commentDraftStore.getDraft(post.id);
@@ -133,7 +137,10 @@ const PostComments = observer(function PostComments({ post }: Props) {
             underlineColorAndroid="transparent"
           />
           {inputText ? (
-            <Pressable onPress={handleSendComment}>
+            <Pressable
+              disabled={status === "loading"}
+              onPress={handleSendComment}
+            >
               <SendIconActive width={30} height={30} />
             </Pressable>
           ) : (

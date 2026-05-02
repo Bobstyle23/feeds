@@ -89,6 +89,12 @@ export class SocketStore {
     this.queryClient.setQueryData(["comments", postId], (oldData: any) => {
       if (!oldData) return oldData;
 
+      const exists = oldData.pages.some((page: Comments) =>
+        page.comments.some((c) => c.id === comment.id),
+      );
+
+      if (exists) return oldData;
+
       return {
         ...oldData,
         pages: oldData.pages.map((page: Comments, index: number) =>
